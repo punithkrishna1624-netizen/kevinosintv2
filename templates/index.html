@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KevinOSINT — Investigation Console</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="scanlines"></div>
+
+<aside class="sidebar">
+  <div class="brand">
+    <img src="{{ url_for('static', filename='kevin-avatar.jpeg') }}" alt="KevinOSINT">
+    <div>
+      <div class="brand-name">KEVIN<span>OSINT</span></div>
+      <small>v2.0 &middot; RECON PLATFORM</small>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <img src="{{ url_for('static', filename='kevin-avatar.jpeg') }}" alt="">
+    <div>
+      <strong>@hackwithkevin</strong>
+      <small>authorized use only</small>
+    </div>
+  </div>
+
+  <nav>
+    <button class="nav active" data-type="auto">◌ <span>Auto detect</span></button>
+    <button class="nav" data-type="domain">◌ <span>Domain / attack surface</span></button>
+    <button class="nav" data-type="email">◌ <span>Email</span></button>
+    <button class="nav" data-type="phone">◌ <span>Phone</span></button>
+    <button class="nav" data-type="username">◌ <span>Username</span></button>
+    <button class="nav" data-type="ip">◌ <span>IP address</span></button>
+    <button class="nav" id="nav-breach">◌ <span>Breach check (self)</span></button>
+  </nav>
+
+  <div class="side-footer">
+    <span class="dot"></span>SYSTEM ONLINE
+    {% if auth_enabled %}<br><a href="{{ url_for('logout') }}" style="color:#666">log out</a>{% endif %}
+  </div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div>
+      <div class="eyebrow">Investigation Console</div>
+      <h1>Attack-surface & OSINT recon</h1>
+    </div>
+    <div class="status">SYSTEM ONLINE</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="tag">Public / authorized sources only</div>
+      <h2>Investigate the <span>public footprint.</span></h2>
+      <p>Passive recon across DNS, certificate transparency, TLS, HTTP headers, and public username/email/phone metadata. Built for bug bounty recon, cybersecurity education, and authorized investigations — not for locating or identifying private individuals.</p>
+    </div>
+    <img class="hero-avatar" src="{{ url_for('static', filename='kevin-avatar.jpeg') }}" alt="">
+  </div>
+
+  <div class="search-panel">
+    <div class="field-row">
+      <div class="field">
+        <label>TARGET TYPE</label>
+        <select id="type">
+          <option value="auto">AUTO DETECT</option>
+          <option value="email">EMAIL</option>
+          <option value="phone">PHONE</option>
+          <option value="username">USERNAME</option>
+          <option value="domain">DOMAIN</option>
+          <option value="ip">IP ADDRESS</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>TARGET</label>
+        <input id="target" type="text" placeholder="example.com, user@mail.com, +91..., username, 8.8.8.8">
+      </div>
+      <div class="field" style="display:flex;align-items:flex-end">
+        <button id="investigate" style="width:100%">INVESTIGATE →</button>
+      </div>
+    </div>
+    <div id="message"></div>
+  </div>
+
+  <div id="results" class="results">
+    <div class="empty">
+      <div class="crosshair">◌</div>
+      <h3>No investigation yet</h3>
+      <p>Enter a target above to begin a passive, public-source lookup.</p>
+    </div>
+  </div>
+
+  <footer>KevinOSINT is for education, bug bounty recon, and authorized investigations only. <span>Do not use it to locate, identify, or contact private individuals without authorization.</span></footer>
+</main>
+
+<div id="breach-modal" class="modal hidden">
+  <div class="modal-card">
+    <h3>Breach exposure check</h3>
+    <p class="modal-copy">This checks Have I Been Pwned for an email address. Only use this for an account you own or are formally authorized to investigate.</p>
+    <input id="breach-email" type="text" placeholder="you@example.com">
+    <label class="checkbox-row">
+      <input type="checkbox" id="breach-auth">
+      <span>I own this email or am formally authorized to check it.</span>
+    </label>
+    <div class="modal-actions">
+      <button id="breach-cancel" class="ghost">Cancel</button>
+      <button id="breach-run">Check</button>
+    </div>
+    <div id="breach-result"></div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
