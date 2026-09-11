@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: kevinosint
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --workers 2 --timeout 30 app:app
+    envVars:
+      - key: ACCESS_CODE
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: HIBP_API_KEY
+        sync: false
